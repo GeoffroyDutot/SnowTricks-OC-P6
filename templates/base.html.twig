@@ -4,13 +4,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}{% endblock %}</title>
+        <!-- Tailwindcss -->
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <!-- Stylesheet -->
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
         <div class="flex flex-col h-screen justify-between">
             {% include 'include/header.html.twig' %}
-            <main>
+            <main class="md:mt-24">
                 {% block body %}{% endblock %}
             </main>
             {% include 'include/footer.html.twig' %}
