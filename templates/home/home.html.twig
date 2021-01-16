@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks{% endblock %}
+
+{% block body %}
+<div id="home-background" class="h-screen bg-fixed bg-no-repeat bg-cover">
+    <h1 id="home-title" class="px-6 pt-40 text-blue-300 text-5xl sm:text-9xl leading-relaxed">The WORLD<br>of SNOWBOARD</h1>
+</div>
+<div class="bg-gray-100">
+    <h2 class="text-center text-green-500 text-3xl p-4">Tricks</h2>
+    <div class="group-tricks flex justify-around flex-wrap p-4">
+        <div class="trick-card border border-gray-100 rounded-lg shadow-lg bg-white max-w-md overflow-hidden my-4">
+            <a href=""><img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-pciture" class="w-full"></a>
+            <div class="px-6 py-4 flex">
+                <h3 class="font-bold w-full"><a href="">Uppercut gauche</a></h3>
+                {#
+                <div class="flex">
+                    <a href=""><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
+                    <a href="" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7"></a>
+                </div>
+                #}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
