@@ -16,3 +16,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> pictures ###
+public/img/tricks/
+public/img/users/
+###< pictures ###
