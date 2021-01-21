@@ -12,7 +12,7 @@
         <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
+    <body class="bg-gray-100">
         <div class="flex flex-col h-screen justify-between">
             {% include 'include/header.html.twig' %}
             <main class="md:mt-24">
@@ -21,5 +21,6 @@
             {% include 'include/footer.html.twig' %}
             {% block javascripts %}{% endblock %}
         </div>
+        <script src="{{ asset('js/global.js') }}"></script>
     </body>
 </html>

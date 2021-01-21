@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - TricksName detail{% endblock %}
+
+{% block body %}
+<div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
+    <div class="trick-big-picture-container relative z-0">
+        {#
+        <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
+            <a href="" class="pr-5"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></a>
+            <a href=""><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></a>
+        </div>
+        #}
+        <div class="flex justify-center">
+            <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">TricksName</h1>
+        </div>
+        <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-picture">
+    </div>
+    <div class="trick-content-container m-4">
+        <div id="trick-medias" class="trick-media-gallery flex flex-wrap hidden sm:flex">
+            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-gallery-picture" class="w-full h-full">
+            </div>
+            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-gallery-picture" class="w-full h-full">
+            </div>
+            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                <iframe src="https://www.youtube.com/embed/NKHYEOAbFyM" class="w-full h-full"></iframe>
+            </div>
+            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                <iframe src="https://www.youtube.com/embed/NKHYEOAbFyM" class="w-full h-full"></iframe>
+            </div>
+        </div>
+        <div class="load-more-comments flex justify-center sm:hidden">
+            <button id="show-medias-btn" class="items-center text-center border-b-4 px-4 py-2 m-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">See medias</button>
+        </div>
+        <div class="trick-text p-2">
+            <p class="text-justify">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
+            </p>
+            <div class="trick-infos mt-5 mb-5 pb-4 text-center border-b-2 border-gray-200">
+                <span class="bg-gray-100 px-4 py-2 rounded">Group: GroupName</span>
+                <br />
+                <br />
+                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Created: 21/10/2020</span>
+                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Author: Jason K.</span>
+                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Last modification: 12/01/2021</span>
+                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Edited by: Roux</span>
+            </div>
+            <div class="trick-comment-form mt-5 mb-5 pb-4 border-b-2 border-gray-200">
+                <p class="text-center">Pour laisser un commentaire veuillez vous <a href="" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
+                {#
+                                <p class="text-lg">Add a new comment :</p>
+                <form class="flex justify-around mt-5">
+                    <textarea class="resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700" placeholder="Type your comment..."></textarea>
+                    <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
+                </form>
+                #}
+            </div>
+            <div class="trick-comment-list">
+                <h3 class="text-lg font-bold">Commentaires:</h3>
+                <ul>
+                    <li class="flex my-8 justify-center">
+                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
+                        <div class="mx-6 flex flex-col justify-center">
+                            <p class="text-gray-400">ThomasSnowtrickers</p>
+                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
+                        </div>
+                    </li>
+                    <li class="flex my-8 justify-center">
+                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
+                        <div class="mx-6 flex flex-col justify-center">
+                            <p class="text-gray-400">ThomasSnowtrickers</p>
+                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
+                        </div>
+                    </li>                    <li class="flex my-8 justify-center">
+                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
+                        <div class="mx-6 flex flex-col justify-center">
+                            <p class="text-gray-400">ThomasSnowtrickers</p>
+                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="load-more-comments flex justify-center">
+                    <button class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">Load more</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
