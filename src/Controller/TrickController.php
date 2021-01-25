@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,12 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class TrickController extends AbstractController
 {
     /**
-     * @Route("/trick", name="trick")
+     * @Route("/tricks/details/{slug}", name="trick_detail")
      */
-    public function index(): Response
+    public function detailTrick(Trick $trick): Response
     {
         return $this->render('trick/trick.html.twig', [
-            'controller_name' => 'TrickController',
+
         ]);
     }
 }
