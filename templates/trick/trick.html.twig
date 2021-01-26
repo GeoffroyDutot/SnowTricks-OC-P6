@@ -12,18 +12,17 @@
         </div>
         #}
         <div class="flex justify-center">
-            <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">TricksName</h1>
+            <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">{{ trick.title }}</h1>
         </div>
-        <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-picture">
+        <img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture">
     </div>
     <div class="trick-content-container m-4">
         <div id="trick-medias" class="trick-media-gallery flex flex-wrap hidden sm:flex">
-            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
-                <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-gallery-picture" class="w-full h-full">
-            </div>
-            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
-                <img src="{{ asset('img/tricks/snowtrick.jpg') }}" alt="trick-gallery-picture" class="w-full h-full">
-            </div>
+            {% for picture in trick.mediaPictures[1:]%}
+                <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                    <img src="{{ asset('img/tricks/') }}{{ picture.name }}" alt="trick-gallery-picture" class="w-full h-full">
+                </div>
+            {% endfor %}
             <div class="w-full md:w-1/3 lg:w-1/4 p-2">
                 <iframe src="https://www.youtube.com/embed/NKHYEOAbFyM" class="w-full h-full"></iframe>
             </div>
@@ -35,21 +34,14 @@
             <button id="show-medias-btn" class="items-center text-center border-b-4 px-4 py-2 m-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">See medias</button>
         </div>
         <div class="trick-text p-2">
-            <p class="text-justify">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus accusantium aperiam atque blanditiis doloremque ea earum ex excepturi, iste maxime necessitatibus nostrum nulla obcaecati quaerat, saepe sit, veritatis vitae voluptatum.
-            </p>
+            <p class="text-justify">{{ trick.description|nl2br }}</p>
             <div class="trick-infos mt-5 mb-5 pb-4 text-center border-b-2 border-gray-200">
-                <span class="bg-gray-100 px-4 py-2 rounded">Group: GroupName</span>
-                <br />
-                <br />
-                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Created: 21/10/2020</span>
+                <span class="bg-gray-100 px-4 py-2 rounded">Group: {{ trick.category.name }}</span>
+                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Created: {{ trick.createdDate|date('d/m/Y') }}</span>
                 <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Author: Jason K.</span>
-                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Last modification: 12/01/2021</span>
+                {% if trick.editedDate is not empty %}
+                    <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Last modification: {{ trick.editedDate|date('d/m/Y') }}</span>
+                {% endif %}
                 <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Edited by: Roux</span>
             </div>
             <div class="trick-comment-form mt-5 mb-5 pb-4 border-b-2 border-gray-200">
