@@ -58,9 +58,15 @@ class Trick
      */
     private $category;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick")
+     */
+    private $mediaVideos;
+
     public function __construct()
     {
         $this->mediaPictures = new ArrayCollection();
+        $this->mediaVideos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +172,36 @@ class Trick
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MediaVideo[]
+     */
+    public function getMediaVideos(): Collection
+    {
+        return $this->mediaVideos;
+    }
+
+    public function addMediaVideo(MediaVideo $mediaVideo): self
+    {
+        if (!$this->mediaVideos->contains($mediaVideo)) {
+            $this->mediaVideos[] = $mediaVideo;
+            $mediaVideo->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMediaVideo(MediaVideo $mediaVideo): self
+    {
+        if ($this->mediaVideos->removeElement($mediaVideo)) {
+            // set the owning side to null (unless already changed)
+            if ($mediaVideo->getTrick() === $this) {
+                $mediaVideo->setTrick(null);
+            }
+        }
 
         return $this;
     }

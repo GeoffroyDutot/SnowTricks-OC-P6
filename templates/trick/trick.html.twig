@@ -23,12 +23,11 @@
                     <img src="{{ asset('img/tricks/') }}{{ picture.name }}" alt="trick-gallery-picture" class="w-full h-full">
                 </div>
             {% endfor %}
-            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
-                <iframe src="https://www.youtube.com/embed/NKHYEOAbFyM" class="w-full h-full"></iframe>
-            </div>
-            <div class="w-full md:w-1/3 lg:w-1/4 p-2">
-                <iframe src="https://www.youtube.com/embed/NKHYEOAbFyM" class="w-full h-full"></iframe>
-            </div>
+            {% for video in trick.mediaVideos %}
+                <div class="w-full md:w-1/3 lg:w-1/4 p-2">
+                    <iframe src="{{ video.link }}" class="w-full h-full"></iframe>
+                </div>
+            {% endfor %}
         </div>
         <div class="load-more-comments flex justify-center sm:hidden">
             <button id="show-medias-btn" class="items-center text-center border-b-4 px-4 py-2 m-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">See medias</button>
