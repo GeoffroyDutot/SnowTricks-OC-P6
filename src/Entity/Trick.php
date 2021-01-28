@@ -63,6 +63,17 @@ class Trick
      */
     private $mediaVideos;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $userAuthor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricksEdited")
+     */
+    private $userEditor;
+
     public function __construct()
     {
         $this->mediaPictures = new ArrayCollection();
@@ -202,6 +213,30 @@ class Trick
                 $mediaVideo->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserAuthor(): ?User
+    {
+        return $this->userAuthor;
+    }
+
+    public function setUserAuthor(?User $userAuthor): self
+    {
+        $this->userAuthor = $userAuthor;
+
+        return $this;
+    }
+
+    public function getUserEditor(): ?User
+    {
+        return $this->userEditor;
+    }
+
+    public function setUserEditor(?User $userEditor): self
+    {
+        $this->userEditor = $userEditor;
 
         return $this;
     }
