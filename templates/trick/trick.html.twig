@@ -14,7 +14,7 @@
         <div class="flex justify-center">
             <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">{{ trick.title }}</h1>
         </div>
-        <img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture">
+        <img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture" class="w-full">
     </div>
     <div class="trick-content-container m-4">
         {% if trick.mediaPictures[1:] is not empty or trick.mediaVideos is not empty %}
