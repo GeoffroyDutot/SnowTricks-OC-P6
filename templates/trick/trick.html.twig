@@ -5,12 +5,12 @@
 {% block body %}
 <div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
     <div class="trick-big-picture-container relative z-0">
-        {#
-        <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
-            <a href="" class="pr-5"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></a>
-            <a href=""><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></a>
-        </div>
-        #}
+        {% if app.user is not empty %}
+            <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
+                <a href="" class="pr-5"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></a>
+                <a href=""><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></a>
+            </div>
+        {% endif %}
         <div class="flex justify-center">
             <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">{{ trick.title }}</h1>
         </div>
@@ -48,14 +48,15 @@
                 {% endif %}
             </div>
             <div class="trick-comment-form mt-5 mb-5 pb-4 border-b-2 border-gray-200">
-                <p class="text-center">Pour laisser un commentaire veuillez vous <a href="" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
-                {#
-                                <p class="text-lg">Add a new comment :</p>
-                <form class="flex justify-around mt-5">
-                    <textarea class="resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700" placeholder="Type your comment..."></textarea>
-                    <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
-                </form>
-                #}
+                {% if app.user is not empty %}
+                    <p class="text-lg">Add a new comment :</p>
+                    <form class="flex justify-around mt-5">
+                        <textarea class="resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700" placeholder="Type your comment..."></textarea>
+                        <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
+                    </form>
+                    {% else %}
+                        <p class="text-center">Pour laisser un commentaire veuillez vous <a href="{{ path('app_login') }}" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
+                {% endif %}
             </div>
             <div class="trick-comment-list">
                 <h3 class="text-lg font-bold">Commentaires:</h3>
@@ -89,4 +90,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        showMedias();
+    </script>
 {% endblock %}

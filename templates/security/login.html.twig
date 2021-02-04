@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - Log in!{% endblock %}
+
+{% block body %}
+    <div class="h-screen flex justify-center items-center -m-32">
+        <form method="post" class="w-full max-w-md bg-white flex flex-col py-5 px-8 rounded-lg shadow-lg">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+
+            <h1 class="text-center text-3xl font-extrabold text-gray-900">Please sign in</h1>
+            <div class="group-inputs flex flex-col px-8 py-4 space-y-4">
+                <label for="inputUsername">Username</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-4" placeholder="Username" required autofocus>
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-4" placeholder="P@ssw0rd" required>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </div>
+
+            {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+            #}
+
+            <div class="load-more-comments flex justify-center">
+                <button class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none" type="submit">Sign In</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

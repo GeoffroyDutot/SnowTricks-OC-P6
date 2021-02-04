@@ -1,0 +1,6 @@
+{% for message in app.flashes('success') %}
+    <div class="w-1/5 bg-green-100 border-l-4 border-green-500 text-green-700 m-4 p-4 rounded-md transition ease-in duration-1000 opacity-0" role="alert" id="alert">
+        <p class="font-bold">Succès !</p>
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
