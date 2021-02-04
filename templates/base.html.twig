@@ -16,11 +16,19 @@
         <div class="flex flex-col h-screen justify-between">
             {% include 'include/header.html.twig' %}
             <main class="md:mt-24">
+                {% include 'include/flash_messages.html.twig' %}
                 {% block body %}{% endblock %}
             </main>
             {% include 'include/footer.html.twig' %}
+            <script src="{{ asset('js/global.js') }}"></script>
+            <script>
+                if (document.getElementById('alert')) {
+                    // Alert
+                    loadAlert();
+                    loadDisappearAlert();
+                }
+            </script>
             {% block javascripts %}{% endblock %}
         </div>
-        <script src="{{ asset('js/global.js') }}"></script>
     </body>
 </html>
