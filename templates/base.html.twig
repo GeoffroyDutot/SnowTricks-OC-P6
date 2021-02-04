@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+        <!-- Tailwindcss -->
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        <!-- Stylesheet -->
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <body class="bg-gray-100">
+        <div class="flex flex-col h-screen justify-between">
+            {% include 'include/header.html.twig' %}
+            <main class="md:mt-24">
+                {% block body %}{% endblock %}
+            </main>
+            {% include 'include/footer.html.twig' %}
+            {% block javascripts %}{% endblock %}
+        </div>
+        <script src="{{ asset('js/global.js') }}"></script>
     </body>
 </html>
