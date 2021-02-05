@@ -64,7 +64,7 @@ class Trick
     private $mediaVideos;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricksAuthored")
      * @ORM\JoinColumn(nullable=false)
      */
     private $userAuthor;

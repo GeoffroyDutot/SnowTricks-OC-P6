@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -24,6 +25,7 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -31,7 +33,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
@@ -40,11 +42,18 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     maxSizeMessage = "File too big : ({{ size }} {{ suffix }}). Max size is {{ limit }} {{ suffix }}.",
+     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
+     *     mimeTypesMessage = "File should be png/jpg/jpeg."
+     * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $profilePicture;
