@@ -17,7 +17,7 @@
                     {% if app.user is not empty %}
                         <div class="flex">
                             <a href=""><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
-                            <a href="" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7"></a>
+                            <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7"></a>
                         </div>
                     {% endif %}
                 </div>
