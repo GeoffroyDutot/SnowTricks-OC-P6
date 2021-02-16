@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Snowtricks - TricksName detail{% endblock %}
+{% block title %}Snowtricks - {{ trick.title}} detail{% endblock %}
 
 {% block body %}
 <div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
@@ -50,38 +50,31 @@
             <div class="trick-comment-form mt-5 mb-5 pb-4 border-b-2 border-gray-200">
                 {% if app.user is not empty %}
                     <p class="text-lg">Add a new comment :</p>
-                    <form class="flex justify-around mt-5">
-                        <textarea class="resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700" placeholder="Type your comment..."></textarea>
-                        <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
-                    </form>
+                    {{ form_start(commentForm, {'attr': {'class': 'flex justify-around mt-5'}}) }}
+
+                    {{ form_label(commentForm.message) }}
+                    {{ form_widget(commentForm.message) }}
+                    <span class="text-red-500">{{ form_errors(commentForm.message) }}</span>
+
+                    <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
+                    {{ form_end(commentForm) }}
                     {% else %}
                         <p class="text-center">Pour laisser un commentaire veuillez vous <a href="{{ path('app_login') }}" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
                 {% endif %}
             </div>
-            <div class="trick-comment-list">
+            <div class="trick-comment-list w-4/5 m-auto">
                 <h3 class="text-lg font-bold">Commentaires:</h3>
-                <ul>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
+                <ul class="flex flex-col">
+                    {% for comment in trick.comments %}
+                        <li class="flex my-4">
+                            <img src="{% if comment.user.profilePicture is not empty %}{{ asset('img/users/') }}{{ comment.user.profilePicture }}{% else %}{{ asset('img/users/user-profile-picture.jpg') }}{% endif %}" alt="user-profil-picture" class="user-picture flex inline-block h-24 w-24 rounded-full items-start">
+                            <div class="mx-6 flex flex-col justify-center">
+                                <p class="text-gray-600">{{ comment.user.username }}</p>
+                                <p class="text-gray-400">{{ comment.createdDate|date('d/m/Y') }}</p>
+                                <p>{{ comment.message }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
                 </ul>
                 <div class="load-more-comments flex justify-center">
                     <button class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">Load more</button>

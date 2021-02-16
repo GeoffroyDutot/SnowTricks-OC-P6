@@ -48,7 +48,7 @@ class Trick
     private $editedDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick", orphanRemoval=true)
      */
     private $mediaPictures;
 
@@ -59,7 +59,7 @@ class Trick
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick", orphanRemoval=true)
      */
     private $mediaVideos;
 
@@ -74,10 +74,17 @@ class Trick
      */
     private $userEditor;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OrderBy({"createdDate" = "DESC"})
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->mediaPictures = new ArrayCollection();
         $this->mediaVideos = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -237,6 +244,36 @@ class Trick
     public function setUserEditor(?User $userEditor): self
     {
         $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
 
         return $this;
     }
