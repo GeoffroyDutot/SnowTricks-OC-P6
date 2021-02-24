@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Trick;
 use App\Form\CommentFormType;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,21 @@ class TrickController extends AbstractController
     /**
      * @Route("/tricks/details/{slug}", name="trick_detail")
      */
-    public function detailTrick(Trick $trick, Request $request): Response
+    public function detailTrick(Trick $trick, CommentRepository $commentRepository, Request $request): Response
     {
+        // Limit of comment to get by page
+        $limitComment = 5;
+        // Get current comments page
+        $commentPage = (int) $request->query->get('comment', 1);
+        // Get offset of comment to get
+        $offsetComment = ($commentPage * $limitComment) - $limitComment;
+        // Total of comments
+        $totalComments = count($trick->getComments());
+        // Nb of comments page
+        $nbCommentsPage = (int) ceil($totalComments / $limitComment);
+
+        $comments = $commentRepository->findBy(['trick' =>$trick->getId()], ['createdDate' => 'DESC'], $limitComment, $offsetComment);
+
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
@@ -39,6 +53,10 @@ class TrickController extends AbstractController
         return $this->render('trick/trick.html.twig', [
             'trick' => $trick,
             'commentForm' => $form->createView(),
+            'comments' => $comments,
+            'totalComments' => $totalComments,
+            'commentPage' => $commentPage,
+            'nbCommentsPage' => $nbCommentsPage
         ]);
     }
 
