@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ForgotPasswordFormType;
 use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordFormType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,8 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -110,8 +113,26 @@ class SecurityController extends AbstractController
     /**
      * @Route("/reset-password/{resetToken}", name="reset_password")
      */
-    public function resetPassword(User $user)
+    public function resetPassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $form = $this->createForm(ResetPasswordFormType::class);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $user->setResetToken(null);
+            $user->setPassword($passwordEncoder->encodePassword($user, $form->get('newPassword')->getData()));
+            $entityManager->flush();
+
+            $this->addFlash('success', 'New password saved !');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/reset_password.html.twig', [
+            'user' => $user,
+            'resetPasswordForm' => $form->createView(),
+        ]);
     }
 }
