@@ -22,8 +22,8 @@
                 <label for="inputPassword">Password</label>
                 <input type="password" name="password" id="inputPassword" class="form-control border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-4" placeholder="P@ssw0rd" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <a href="{{ path('forgot_password') }}" class="text-blue-400">Forgot password ?</a>
             </div>
-
             {#
                 Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
                 See https://symfony.com/doc/current/security/remember_me.html

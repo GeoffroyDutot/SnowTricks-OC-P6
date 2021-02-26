@@ -10,3 +10,9 @@
         <p>{{ message }}</p>
     </div>
 {% endfor %}
+{% for message in app.flashes('error') %}
+    <div class="w-1/5 bg-red-100 border-l-4 border-red-100-500 text-red-700 m-4 p-4 rounded-md transition ease-in duration-1000 opacity-0" role="alert" id="alert">
+        <p class="font-bold">Error !</p>
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
