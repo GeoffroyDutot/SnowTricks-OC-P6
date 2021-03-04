@@ -8,6 +8,11 @@
 </div>
 <div class="home-tricks-list mb-5" id="block-trick-list">
     <h2 class="text-center text-green-500 text-3xl p-4" id="tricks">Tricks</h2>
+    {% if app.user is not empty %}
+        <div class="text-center m-10 text-base">
+            <a href="{{ path('trick_new') }}" class="bg-white rounded-lg shadow-lg px-2 py-2 hover:text-white hover:bg-green-400">New trick <i class="fas fa-plus"></i></a>
+        </div>
+    {% endif %}
     <div class="group-tricks flex justify-around flex-wrap p-4" id="group-trick">
         {% for trick in tricks %}
             <div class="trick-card rounded-lg shadow-lg bg-white max-w-md overflow-hidden my-4">
