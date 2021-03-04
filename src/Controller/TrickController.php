@@ -3,13 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\MediaPicture;
+use App\Entity\MediaVideo;
 use App\Entity\Trick;
 use App\Form\CommentFormType;
+use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TrickController extends AbstractController
 {
@@ -87,5 +93,53 @@ class TrickController extends AbstractController
         $this->addFlash('success', 'Trick successfuly deleted.');
 
         return $this->redirectToRoute("home");
+    }
+
+    /**
+     * @Route("/tricks/new", name="trick_new")
+     */
+    public function addTrick(Request $request, FileUploader $fileUploader)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $trick = new Trick();
+
+        $form = $this->createForm(TrickFormType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $slugger = new AsciiSlugger();
+            $trick->setSlug($slugger->slug($trick->getTitle()));
+            $trick->setCreatedDate(new \DateTime('now'));
+            $trick->setUserAuthor($this->getUser());
+
+            if (!empty($form->get('mediaPictures'))) {
+                foreach ($form->get('mediaPictures') as $picture) {
+                    $file = $picture->get('name')->getData();
+                    if (!empty($file)) {
+                        $trickPictureFileName = $fileUploader->upload($file, $this->getParameter('app.trick_picture_directory'));
+                        $mediaPicture = new MediaPicture();
+                        $mediaPicture->setTrick($trick);
+                        $mediaPicture->setName($trickPictureFileName);
+                        $trick->addMediaPicture($mediaPicture);
+                    }
+                }
+            }
+
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Trick created.');
+
+            return $this->redirectToRoute('trick_detail', [
+                'slug' => $trick->getSlug()
+            ]);
+        }
+
+        return $this->render('trick/add_trick.html.twig', [
+            'trickForm' => $form->createView()
+        ]);
     }
 }
