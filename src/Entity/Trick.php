@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -23,6 +24,7 @@ class Trick
     private $id;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $title;
@@ -33,6 +35,7 @@ class Trick
     private $slug;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="text")
      */
     private $description;
@@ -48,18 +51,20 @@ class Trick
     private $editedDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      */
     private $mediaPictures;
 
     /**
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     * @Assert\Valid()
      */
     private $mediaVideos;
 
