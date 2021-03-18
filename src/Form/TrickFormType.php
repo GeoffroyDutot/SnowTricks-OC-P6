@@ -28,7 +28,8 @@ class TrickFormType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => [
                     'class' => 'form-control border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-4',
-                    'placeholder' => 'Description'
+                    'placeholder' => 'Description',
+                    'rows' => 5
                 ],
                 'empty_data' => '',
                 'required' => true
@@ -54,11 +55,10 @@ class TrickFormType extends AbstractType
                 'by_reference' => false
             ])
             ->add('mediaPictures', CollectionType::class, [
-                'constraints' => new \Symfony\Component\Validator\Constraints\Valid(),
                 'entry_type' => MediaPictureFormType::class,
                 'label' => false,
                 'required' => false,
-                'mapped' => false,
+                'mapped' => true,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

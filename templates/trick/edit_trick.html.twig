@@ -1,0 +1,201 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - {{ trick.title}} edit{% endblock %}
+
+{% block body %}
+    <div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
+        {{ form_start(trickForm) }}
+        <div class="trick-big-picture-container relative z-0">
+            {% if trick.mediaPictures is not empty %}
+                <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
+                    <button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ trick.mediaPictures|first.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>
+                    <button type="button" firstPicture onclick="removeMedia('trick-media-picture-{{ trick.mediaPictures|first.id }}', 'remove-media-picture-{{ trick.mediaPictures|first.id }}')" id="remove-media-picture-{{ trick.mediaPictures|first.id }}"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
+                </div>
+            {% endif %}
+            <div class="flex justify-center">
+                <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">{{ trick.title }}</h1>
+            </div>
+            <img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture" class="w-full">
+        </div>
+        <div class="trick-content-container m-4">
+            {% if trick.mediaPictures[1:] is not empty or trick.mediaVideos is not empty %}
+                <div id="trick-medias" class="trick-media-gallery flex justify-around flex-wrap p-4">
+                    {% for picture in trick.mediaPictures[1:] %}
+                        <div class="max-w-sm overflow-hidden my-4">
+                            <div class="picture">
+                                <img src="{{ asset('img/tricks/') }}{{ picture.name }}" alt="trick-gallery-picture" class="w-full h-80">
+                            </div>
+                            <div class="trick-media-actions flex p-2 border border-gray-200 rounded justify-center">
+                                <button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ picture.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>
+                                <button type="button" onclick="removeMedia('trick-media-picture-{{ picture.id }}', 'remove-media-picture-{{ picture.id }}')" id="remove-media-picture-{{ picture.id }}"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for video in trick.mediaVideos %}
+                        <div class="max-w-sm overflow-hidden my-4">
+                            <div class="video">
+                                <iframe src="{{ video.link }}" class="w-full h-full"></iframe>
+                            </div>
+                            <div class="trick-media-actions flex p-2 border border-gray-200 rounded justify-center">
+                                <button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-video-{{ video.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>
+                                <button type="button" onclick="removeMedia('trick-media-video-{{ video.id }}', 'remove-media-video-{{ video.id }}')" id="remove-media-video-{{ video.id }}"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="load-more-medias flex justify-center sm:hidden">
+                    <button id="show-medias-btn" class="items-center text-center border-b-4 px-4 py-2 m-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">See medias</button>
+                </div>
+            {% endif %}
+            <div class="trick-text p-2">
+                <div class="form w-3/4 m-auto mt-10 mb-10 flex flex-col py-5 px-8">
+                    <div class="group-inputs flex flex-col px-8 py-4 space-y-4">
+                        {{ form_label(trickForm.title) }}
+                        {{ form_widget(trickForm.title) }}
+                        <span class="text-red-500">{{ form_errors(trickForm.title) }}</span>
+
+                        {{ form_label(trickForm.description) }}
+                        {{ form_widget(trickForm.description) }}
+                        <span class="text-red-500">{{ form_errors(trickForm.description) }}</span>
+
+                        {{ form_label(trickForm.category) }}
+                        {{ form_widget(trickForm.category) }}
+                        <span class="text-red-500">{{ form_errors(trickForm.category) }}</span>
+
+                        <ul id="media-pictures-fields-list"
+                            data-prototype="{{ form_widget(trickForm.mediaPictures.vars.prototype)|e }}"
+                            data-widget-tags="{{ '<li class="flex flex-row"></li>'|e }}"
+                            data-widget-counter="{{ trickForm.mediaPictures|length }}">
+                        </ul>
+
+                        <button type="button" class="add-another-collection-widget w-32 border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-2" data-list-selector="#media-pictures-fields-list">Add picture <i class="fas fa-plus"></i></button>
+
+                        <ul id="media-videos-fields-list"
+                            data-prototype="{{ form_widget(trickForm.mediaVideos.vars.prototype)|e }}"
+                            data-widget-tags="{{ '<li class="flex flex-row"></li>'|e }}"
+                            data-widget-counter="{{ trickForm.mediaVideos|length }}">
+                        </ul>
+
+                        <button type="button" class="add-another-collection-widget w-32 border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-2" data-list-selector="#media-videos-fields-list">Add video <i class="fas fa-plus"></i></button>
+
+                        {{ form_row(trickForm._token) }}
+
+                        <div class="form-actions btns w-full flex justify-end">
+                            <div class="flex">
+                                <button type="button" class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-red-400 border-red-200 text-white rounded focus:outline-none hover:shadow-md" onclick="toggleModal('delete-trick-modal')">Delete</button>
+                                <button class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded focus:outline-none hover:shadow-md" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for urlField in trickForm.mediaVideos %}
+            <div class="form-modal">
+                    <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="trick-media-video-{{ urlField.vars.value.id }}">
+                        <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                            <!--content-->
+                            <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                <!--header-->
+                                <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                                    <h3 class="text-3xl font-semibold">
+                                        Edit media video
+                                    </h3>
+                                    <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('trick-media-video-{{ urlField.vars.value.id }}')">
+                                        x
+                                    </button>
+                                </div>
+                                <!--body-->
+                                <ul class="relative p-6 flex-auto w-full">
+                                    <li>
+                                        {{ form_errors(urlField) }}
+                                        {{ form_widget(urlField) }}
+                                    </li>
+                                </ul>
+                                <!--footer-->
+                                <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                                    <button class="text-gray-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease" onclick="toggleModal('trick-media-video-{{ urlField.vars.value.id }}')">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="trick-media-video-{{ urlField.vars.value.id }}-backdrop"></div>
+                </div>
+        {% endfor %}
+        {% for picture in trickForm.mediaPictures %}
+            <div class="form-modal">
+                <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="trick-media-picture-{{ picture.name.parent.vars.value.id }}">
+                    <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                        <!--content-->
+                        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <!--header-->
+                            <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                                <h3 class="text-3xl font-semibold">
+                                    Edit media picture
+                                </h3>
+                                <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('trick-media-picture-{{ picture.name.parent.vars.value.id }}')">
+                                    x
+                                </button>
+                            </div>
+                            <!--body-->
+                            <ul class="relative p-6 flex-auto w-full">
+                                <li>
+                                    {{ form_row(picture.name) }}
+                                </li>
+                            </ul>
+                            <!--footer-->
+                            <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                                <button class="text-gray-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease" onclick="toggleModal('trick-media-picture-{{ picture.name.parent.vars.value.id }}')">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="trick-media-picture-{{ picture.name.parent.vars.value.id }}-backdrop"></div>
+            </div>
+        {% endfor %}
+        {{ form_end(trickForm, {'render_rest': false}) }}
+        <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-modal">
+            <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                <!--content-->
+                <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                    <!--header-->
+                    <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                        <h3 class="text-3xl font-semibold">
+                            Edit media picture
+                        </h3>
+                        <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('delete-trick-modal')">
+                            x
+                        </button>
+                    </div>
+                    <!--body-->
+                    <ul class="relative p-6 flex-auto w-full">
+                        <li>
+                            Do you really want to delete that trick ?
+                            That action is not reversible.
+                        </li>
+                    </ul>
+                    <!--footer-->
+                    <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                        <button class="text-gray-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease" onclick="toggleModal('delete-trick-modal')">
+                            Close
+                        </button>
+                        <a class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" href="{{ path('trick_delete', {'slug': trick.slug}) }}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="delete-trick-modal-backdrop"></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        showMedias();
+    </script>
+    <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/collection-form.js') }}"></script>
+{% endblock %}
