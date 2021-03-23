@@ -10,7 +10,9 @@ use App\Form\CommentFormType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Service\FileUploader;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -147,9 +149,16 @@ class TrickController extends AbstractController
     /**
      * @Route("/tricks/edit/{slug}", name="trick_edit")
      */
-    public function editTrick(Trick $trick, Request $request, FileUploader $fileUploader): Response
+    public function editTrick(Trick $trick, Request $request, FileUploader $fileUploader, Filesystem $filesystem): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $originalMediaPictures = new ArrayCollection();
+
+        // Create an ArrayCollection of the current mediaPicture objects in the database
+        foreach ($trick->getMediaPictures() as $mediaPicture) {
+            $originalMediaPictures->add($mediaPicture);
+        }
 
         $form = $this->createForm(TrickFormType::class, $trick);
         $form->handleRequest($request);
@@ -161,16 +170,23 @@ class TrickController extends AbstractController
             $trick->setUserEditor($this->getUser());
             $trick->setEditedDate(new \DateTime('now'));
 
-            if (!empty($form->get('mediaPictures'))) {
-                foreach ($form->get('mediaPictures') as $picture) {
-                    $file = $picture->get('name')->getData();
-                    if (!empty($file)) {
-                        $trickPictureFileName = $fileUploader->upload($file, $this->getParameter('app.trick_picture_directory'));
-                        $mediaPicture = new MediaPicture();
-                        $mediaPicture->setTrick($trick);
-                        $mediaPicture->setName($trickPictureFileName);
-                        $trick->addMediaPicture($mediaPicture);
-                    }
+            foreach ($form->get('mediaPictures') as $picture) {
+                $file = $picture->get('name')->getData();
+                if (!empty($file)) {
+                    $trickPictureFileName = $fileUploader->upload($file, $this->getParameter('app.trick_picture_directory'));
+                    $mediaPicture = new MediaPicture();
+                    $mediaPicture->setTrick($trick);
+                    $mediaPicture->setName($trickPictureFileName);
+                    $trick->addMediaPicture($mediaPicture);
+                }
+            }
+
+            foreach ($originalMediaPictures as $mediaPicture) {
+                if (!$trick->getMediaPictures()->contains($mediaPicture)) {
+                    $mediaPicture->setTrick(null);
+                    $entityManager->persist($mediaPicture);
+                    $entityManager->remove($mediaPicture);
+                    $filesystem->remove($this->getParameter('app.trick_picture_directory') . $mediaPicture->getName());
                 }
             }
 

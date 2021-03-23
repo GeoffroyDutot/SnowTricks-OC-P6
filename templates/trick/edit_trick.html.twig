@@ -142,7 +142,8 @@
                             <!--body-->
                             <ul class="relative p-6 flex-auto w-full">
                                 <li>
-                                    {{ form_row(picture.name) }}
+                                    {{ form_errors(picture.name) }}
+                                    {{ form_widget(picture.name) }}
                                 </li>
                             </ul>
                             <!--footer-->
