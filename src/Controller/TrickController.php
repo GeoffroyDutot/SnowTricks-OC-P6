@@ -10,12 +10,15 @@ use App\Form\CommentFormType;
 use App\Form\TrickFormType;
 use App\Repository\CommentRepository;
 use App\Service\FileUploader;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use function Symfony\Component\String\s;
 
 class TrickController extends AbstractController
 {
@@ -139,6 +142,69 @@ class TrickController extends AbstractController
         }
 
         return $this->render('trick/add_trick.html.twig', [
+            'trickForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/tricks/edit/{slug}", name="trick_edit")
+     */
+    public function editTrick(Trick $trick, Request $request, FileUploader $fileUploader, Filesystem $filesystem): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $originalMediaPictures = new ArrayCollection();
+
+        // Create an ArrayCollection of the current mediaPicture objects in the database
+        foreach ($trick->getMediaPictures() as $mediaPicture) {
+            $originalMediaPictures->add($mediaPicture);
+        }
+
+        $form = $this->createForm(TrickFormType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $slugger = new AsciiSlugger();
+            $trick->setSlug($slugger->slug($trick->getTitle()));
+            $trick->setUserEditor($this->getUser());
+            $trick->setEditedDate(new \DateTime('now'));
+
+            foreach ($form->get('mediaPictures') as $picture) {
+                $file = $picture->get('name')->getData();
+                if (!empty($file)) {
+                    $trickPictureFileName = $fileUploader->upload($file, $this->getParameter('app.trick_picture_directory'));
+                    $mediaPicture = new MediaPicture();
+                    $mediaPicture->setTrick($trick);
+                    $mediaPicture->setName($trickPictureFileName);
+                    $trick->addMediaPicture($mediaPicture);
+                }
+            }
+
+            foreach ($originalMediaPictures as $mediaPicture) {
+                if (!$trick->getMediaPictures()->contains($mediaPicture)) {
+                    $mediaPicture->setTrick(null);
+                    $entityManager->persist($mediaPicture);
+                    $entityManager->remove($mediaPicture);
+                    $filesystem->remove($this->getParameter('app.trick_picture_directory') . $mediaPicture->getName());
+                }
+            }
+
+            foreach ($trick->getMediaPictures() as $mediaPicture) {
+                if (empty($mediaPicture->getName())) {
+                    $trick->removeMediaPicture($mediaPicture);
+                }
+            }
+
+            $entityManager->persist($trick);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Trick updated.');
+            return $this->redirectToRoute('trick_detail', ['slug' => $trick->getSlug()]);
+        }
+
+        return $this->render('trick/edit_trick.html.twig', [
+            'trick' => $trick,
             'trickForm' => $form->createView()
         ]);
     }

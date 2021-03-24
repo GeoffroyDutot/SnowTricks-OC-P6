@@ -37,5 +37,10 @@ function addTagFormDeleteLink($tagFormLi) {
         $tagFormLi.remove();
     });
 }
-addNewFormCollection();
+function removeMedia(elementId, elementClickedId) {
+    document.getElementById(elementId).parentElement.remove();
+    document.getElementById(elementClickedId).parentElement.parentElement.remove();
+    document.getElementById(elementClickedId).parentElement.parentElement.remove();
 
+}
+addNewFormCollection();
