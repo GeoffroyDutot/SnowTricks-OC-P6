@@ -22,10 +22,37 @@
                     {% if app.user is not empty %}
                         <div class="flex">
                             <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
-                            <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7"></a>
+                            <button type="button" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7" onclick="toggleModal('delete-trick-{{ trick.id }}')"></button>
                         </div>
                     {% endif %}
                 </div>
+            </div>
+            <div class="delete-modal">
+                <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-{{ trick.id }}">
+                    <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                        <!--content-->
+                        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <!--header-->
+                            <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                                <h3 class="text-3xl font-semibold">
+                                    Are you sure to delete that trick ?
+                                </h3>
+                                <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('delete-trick-{{ trick.id }}')">
+                                    x
+                                </button>
+                            </div>
+                            <!--body-->
+                            <p class="relative p-6 flex-auto w-full">This action is irreversible.</p>
+                            <!--footer-->
+                            <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                                <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="text-white bg-red-500 rounded-md shadow-2xl font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" style="transition: all .15s ease">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="delete-trick-{{ trick.id }}-backdrop"></div>
             </div>
         {% endfor %}
     </div>
@@ -44,4 +71,5 @@
     <script>
         infiniteScroll();
     </script>
+    <script src="{{ asset('js/modal.js') }}"></script>
 {% endblock %}
