@@ -166,25 +166,22 @@
                     <!--header-->
                     <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
                         <h3 class="text-3xl font-semibold">
-                            Edit media picture
+                            Are you sure to delete that trick ?
                         </h3>
                         <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('delete-trick-modal')">
                             x
                         </button>
                     </div>
                     <!--body-->
-                    <ul class="relative p-6 flex-auto w-full">
-                        <li>
-                            Do you really want to delete that trick ?
-                            That action is not reversible.
-                        </li>
-                    </ul>
+                    <p class="relative p-6 flex-auto w-full">This action is irreversible.</p>
                     <!--footer-->
                     <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
                         <button class="text-gray-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" type="button" style="transition: all .15s ease" onclick="toggleModal('delete-trick-modal')">
                             Close
                         </button>
-                        <a class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" href="{{ path('trick_delete', {'slug': trick.slug}) }}">Delete</a>
+                        <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="text-white bg-red-500 rounded-md shadow-2xl font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" style="transition: all .15s ease">
+                            Delete
+                        </a>
                     </div>
                 </div>
             </div>
