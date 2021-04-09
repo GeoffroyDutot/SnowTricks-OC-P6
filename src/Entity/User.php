@@ -78,6 +78,16 @@ class User implements UserInterface
      */
     private $resetToken;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $validationToken;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validated;
+
     public function __construct()
     {
         $this->tricksAuthored = new ArrayCollection();
@@ -280,6 +290,30 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getValidationToken(): ?string
+    {
+        return $this->validationToken;
+    }
+
+    public function setValidationToken(?string $validationToken): self
+    {
+        $this->validationToken = $validationToken;
+
+        return $this;
+    }
+
+    public function getValidated(): ?bool
+    {
+        return $this->validated;
+    }
+
+    public function setValidated(bool $validated): self
+    {
+        $this->validated = $validated;
 
         return $this;
     }
