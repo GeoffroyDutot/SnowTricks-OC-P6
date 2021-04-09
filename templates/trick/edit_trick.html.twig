@@ -3,7 +3,7 @@
 {% block title %}Snowtricks - {{ trick.title}} edit{% endblock %}
 
 {% block body %}
-    <div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
+    <div class="trick-container w-11/12 md:w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
         {{ form_start(trickForm) }}
         <div class="trick-big-picture-container relative z-0">
             {% if trick.mediaPictures is not empty %}
@@ -48,7 +48,7 @@
                 </div>
             {% endif %}
             <div class="trick-text p-2">
-                <div class="form w-3/4 m-auto mt-10 mb-10 flex flex-col py-5 px-8">
+                <div class="form w-full sm:w-3/4 m-auto mt-10 mb-10 flex flex-col py-5 px-8">
                     <div class="group-inputs flex flex-col px-8 py-4 space-y-4">
                         {{ form_label(trickForm.title) }}
                         {{ form_widget(trickForm.title) }}
@@ -93,7 +93,7 @@
         {% for urlField in trickForm.mediaVideos %}
             <div class="form-modal">
                     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="trick-media-video-{{ urlField.vars.value.id }}">
-                        <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                        <div class="relative w-full sm:w-1/2 my-6 mx-auto max-w-3xl">
                             <!--content-->
                             <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 <!--header-->
@@ -127,7 +127,7 @@
         {% for picture in trickForm.mediaPictures %}
             <div class="form-modal">
                 <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="trick-media-picture-{{ picture.name.parent.vars.value.id }}">
-                    <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                    <div class="relative w-full sm:w-1/2 my-6 mx-auto max-w-3xl">
                         <!--content-->
                         <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                             <!--header-->
@@ -160,7 +160,7 @@
         {% endfor %}
         {{ form_end(trickForm, {'render_rest': false}) }}
         <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-modal">
-            <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+            <div class="relative w-full sm:w-1/2 my-6 mx-auto max-w-3xl">
                 <!--content-->
                 <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                     <!--header-->
