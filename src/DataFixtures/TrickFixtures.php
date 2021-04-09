@@ -20,7 +20,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $mute->setUserAuthor($this->getReference('user1'));
         $mute->setEditedDate(new \DateTime('now'));
         $mute->setUserEditor($this->getReference('user2'));
-
         $manager->persist($mute);
         $this->addReference('mute', $mute);
 
@@ -33,7 +32,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $backFlip->setUserAuthor($this->getReference('user3'));
         $backFlip->setEditedDate(new \DateTime('2021-01-28 23:11:00'));
         $backFlip->setUserEditor($this->getReference('user1'));
-
         $manager->persist($backFlip);
         $this->addReference('back-flip', $backFlip);
 
@@ -44,7 +42,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $halfCab->setCreatedDate(new \DateTime('2021-01-03 14:21:00'));
         $halfCab->setCategory($this->getReference('spin'));
         $halfCab->setUserAuthor($this->getReference('user4'));
-
         $manager->persist($halfCab);
         $this->addReference('half-cab', $halfCab);
 
@@ -55,7 +52,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $frontFlip->setCreatedDate(new \DateTime('now'));
         $frontFlip->setCategory($this->getReference('flip'));
         $frontFlip->setUserAuthor($this->getReference('user2'));
-
         $manager->persist($frontFlip);
         $this->addReference('front-flip', $frontFlip);
 
@@ -68,7 +64,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $boardSlide->setUserAuthor($this->getReference('user5'));
         $boardSlide->setEditedDate(new \DateTime('2021-01-12 08:11:21'));
         $boardSlide->setUserEditor($this->getReference('user3'));
-
         $manager->persist($boardSlide);
         $this->addReference('boardslide', $boardSlide);
 
@@ -81,7 +76,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $noseGrab->setUserAuthor($this->getReference('user4'));
         $noseGrab->setEditedDate(new \DateTime('2021-01-07 18:21:21'));
         $noseGrab->setUserEditor($this->getReference('user5'));
-
         $manager->persist($noseGrab);
         $this->addReference('nose-grab', $noseGrab);
 
@@ -94,7 +88,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $alleyOop->setUserAuthor($this->getReference('user2'));
         $alleyOop->setEditedDate(new \DateTime('2021-01-16 12:00:21'));
         $alleyOop->setUserEditor($this->getReference('user3'));
-
         $manager->persist($alleyOop);
         $this->addReference('alley-oop', $alleyOop);
 
@@ -105,7 +98,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $tailfish->setCreatedDate(new \DateTime('2021-01-17'));
         $tailfish->setCategory($this->getReference('grab'));
         $tailfish->setUserAuthor($this->getReference('user6'));
-
         $manager->persist($tailfish);
         $this->addReference('tailfish', $tailfish);
 
@@ -116,7 +108,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $seatbelt->setCreatedDate(new \DateTime('2021-01-03'));
         $seatbelt->setCategory($this->getReference('grab'));
         $seatbelt->setUserAuthor($this->getReference('user2'));
-
         $manager->persist($seatbelt);
         $this->addReference('seatbelt', $seatbelt);
 
@@ -127,7 +118,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $tailslide->setCreatedDate(new \DateTime('2021-01-01'));
         $tailslide->setCategory($this->getReference('slide'));
         $tailslide->setUserAuthor($this->getReference('user6'));
-
         $manager->persist($tailslide);
         $this->addReference('tailslide', $tailslide);
 
@@ -138,7 +128,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $tweak->setCreatedDate(new \DateTime('2021-01-12'));
         $tweak->setCategory($this->getReference('tweak'));
         $tweak->setUserAuthor($this->getReference('user5'));
-
         $manager->persist($tweak);
         $this->addReference('tweak_', $tweak);
 
@@ -149,7 +138,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $poke->setCreatedDate(new \DateTime('2021-01-21'));
         $poke->setCategory($this->getReference('tweak'));
         $poke->setUserAuthor($this->getReference('user1'));
-
         $manager->persist($poke);
         $this->addReference('poke', $poke);
 
@@ -160,7 +148,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $nosePick->setCreatedDate(new \DateTime('2021-01-22'));
         $nosePick->setCategory($this->getReference('stall'));
         $nosePick->setUserAuthor($this->getReference('user4'));
-
         $manager->persist($nosePick);
         $this->addReference('nose-pick', $nosePick);
 
@@ -171,7 +158,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $cork->setCreatedDate(new \DateTime('2021-01-19'));
         $cork->setCategory($this->getReference('flip'));
         $cork->setUserAuthor($this->getReference('user6'));
-
         $manager->persist($cork);
         $this->addReference('cork', $cork);
 

@@ -1,16 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap');
-#home-background {
-    background-image: url("../img/home/snowboard-background.jpg");
-}
-#home-title {
-    font-family: 'East Sea Dokdo', cursive;
-}
-.btn-trick {
-    transition: all .15s ease
-}
-.fa-trash {
-    color: #c50606;
-}
-#scroll-top {
 
+#home-background {
+  background-image: url("../img/home/snowboard-background.jpg");
+}
+
+#home-title {
+  font-family: 'East Sea Dokdo', cursive;
+}
+
+.btn-trick {
+  transition: all 0.15s ease;
+}
+
+.fa-trash {
+  color: #c50606;
 }

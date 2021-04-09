@@ -27,27 +27,28 @@ In addition to the community site, the project will have UML diagrams and an ana
 
 ## Build with 
 
-- Symfony 5.2
-- Twig
-- Tailwindcss
-- Jquery
+-   Symfony 5.2
+-   Twig
+-   Tailwindcss
+-   Jquery
 
 ## Requirements 
 
-- PHP 7.4
-- Composer
-- Web server
-- MYSQL
+-   PHP 7.4
+-   Composer
+-   Web server
+-   MYSQL
 
 ## Installation
 
-- Clone / Download the project
-- Configure your web server to point on the project directory
-- Composer install
-- Copy the .env.template file and rename it to .env 
-- Edit the .env file to connect it with your database server and your SMTP server to send emails
-- Run the command to create the database :  `php bin/console doctrine:database:create`
+-   Clone / Download the project
 
-    Nb: If you want to add data fixtures. You will need to be in dev mode and to run : 
+-   Configure your web server to point on the project directory
+-   Composer install
+-   Copy the .env.template file and rename it to .env 
+-   Edit the .env file to connect it with your database server and your SMTP server to send emails
+-   Run the command to create the database :  `php bin/console doctrine:database:create`
 
-    `php bin/console doctrine:fixtures:load`
+  Nb: If you want to add data fixtures. You will need to be in dev mode and to run : 
+
+  `php bin/console doctrine:fixtures:load`
