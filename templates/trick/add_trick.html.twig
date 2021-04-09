@@ -3,7 +3,7 @@
 {% block title %}Snowtricks - New trick{% endblock %}
 
 {% block body %}
-    <div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-lg shadow-lg overflow-hidden bg-white">
+    <div class="trick-container w-11/12 md:w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-lg shadow-lg overflow-hidden bg-white">
         <div class="form w-full flex flex-col py-5 px-8">
             <h1 class="text-center text-3xl font-extrabold text-gray-900">Add new trick</h1>
             {{ form_start(trickForm) }}
@@ -34,7 +34,6 @@
                 </ul>
 
                 <button type="button" class="add-another-collection-widget w-32 border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-2" data-list-selector="#media-pictures-fields-list">Add picture <i class="fas fa-plus"></i></button>
-
 
                 {{ form_label(trickForm.mediaVideos) }}
                 <ul id="media-videos-fields-list"

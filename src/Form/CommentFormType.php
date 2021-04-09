@@ -18,7 +18,7 @@ class CommentFormType extends AbstractType
         $builder
             ->add('message', TextareaType::class, [
                 'attr' => [
-                    'class' => 'resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700',
+                    'class' => 'resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700 m-4',
                     'placeholder' => 'Type your comment...'
                 ],
                 'label' => 'Message',
