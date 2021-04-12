@@ -8,7 +8,7 @@
         <div class="trick-big-picture-container relative z-0">
             {% if trick.mediaPictures is not empty %}
                 <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
-                    <button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ trick.mediaPictures|first.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>
+                    <!--<button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ trick.mediaPictures|first.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>-->
                     <button type="button" firstPicture onclick="removeMedia('trick-media-picture-{{ trick.mediaPictures|first.id }}', 'remove-media-picture-{{ trick.mediaPictures|first.id }}')" id="remove-media-picture-{{ trick.mediaPictures|first.id }}"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
                 </div>
             {% endif %}
@@ -26,7 +26,7 @@
                                 <img src="{{ asset('img/tricks/') }}{{ picture.name }}" alt="trick-gallery-picture" class="w-full h-80">
                             </div>
                             <div class="trick-media-actions flex p-2 border border-gray-200 rounded justify-center">
-                                <button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ picture.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>
+                                <!--<button type="button" class="pr-5 outline-none focus:outline-none" onclick="toggleModal('trick-media-picture-{{ picture.id }}')"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></button>-->
                                 <button type="button" onclick="removeMedia('trick-media-picture-{{ picture.id }}', 'remove-media-picture-{{ picture.id }}')" id="remove-media-picture-{{ picture.id }}"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
                             </div>
                         </div>
