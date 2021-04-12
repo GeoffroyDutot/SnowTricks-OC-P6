@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\MediaVideoRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MediaVideoRepository::class)
@@ -19,7 +18,6 @@ class MediaVideo
     private $id;
 
     /**
-     * @Assert\Url
      * @ORM\Column(type="string", length=255)
      */
     private $link;

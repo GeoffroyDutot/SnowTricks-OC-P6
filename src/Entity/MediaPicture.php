@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MediaPictureRepository;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,11 +18,6 @@ class MediaPicture
     private $id;
 
     /**
-     * @Assert\File(
-     *     maxSize = "2M",
-     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
-     *     mimeTypesMessage = "Please upload a valid picture file png - jpg - jpeg"
-     * )
      * @ORM\Column(type="string", length=255)
      */
     private $name;

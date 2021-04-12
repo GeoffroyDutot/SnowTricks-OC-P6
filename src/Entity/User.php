@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -25,7 +24,6 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @Assert\NotNull()
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -33,7 +31,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = ['ROLE_USER'];
+    private $roles = [];
 
     /**
      * @var string The hashed password
@@ -42,18 +40,11 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @Assert\NotNull()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
-     * @Assert\File(
-     *     maxSize = "2M",
-     *     maxSizeMessage = "File too big : ({{ size }} {{ suffix }}). Max size is {{ limit }} {{ suffix }}.",
-     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
-     *     mimeTypesMessage = "File should be png/jpg/jpeg."
-     * )
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $profilePicture;
@@ -68,31 +59,10 @@ class User implements UserInterface
      */
     private $tricksEdited;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $comments;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $resetToken;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $validationToken;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $validated;
-
     public function __construct()
     {
         $this->tricksAuthored = new ArrayCollection();
         $this->tricksEdited = new ArrayCollection();
-        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,72 +218,6 @@ class User implements UserInterface
                 $tricksEdited->setUserEditor(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comment $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comment $comment): self
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this;
-    }
-
-    public function getValidationToken(): ?string
-    {
-        return $this->validationToken;
-    }
-
-    public function setValidationToken(?string $validationToken): self
-    {
-        $this->validationToken = $validationToken;
-
-        return $this;
-    }
-
-    public function getValidated(): ?bool
-    {
-        return $this->validated;
-    }
-
-    public function setValidated(bool $validated): self
-    {
-        $this->validated = $validated;
 
         return $this;
     }
