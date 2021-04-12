@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
         $user1->setProfilePicture('user-profile-1.jpeg');
         $user1->setRoles(['ROLE_USER']);
         $user1->setValidated(1);
-
+      
         $manager->persist($user1);
         $this->addReference('user1', $user1);
 
