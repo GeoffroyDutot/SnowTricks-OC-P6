@@ -23,11 +23,15 @@
                     {% if app.user is not empty %}
                         <div class="flex">
                             <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
-                            <button type="button" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7" onclick="toggleModal('delete-trick-{{ trick.id }}')"></button>
+                            <button type="button" class="pl-4 focus:outline-none"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7" onclick="toggleModal('delete-trick-{{ trick.id }}')"></button>
                         </div>
                     {% endif %}
                 </div>
             </div>
+        {% endfor %}
+    </div>
+    <div id="group-delete-trick-modals">
+        {% for trick in tricks %}
             <div class="delete-modal">
                 <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-{{ trick.id }}">
                     <div class="relative w-full sm:w-1/2 my-6 mx-auto max-w-3xl">
