@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -23,6 +24,7 @@ class Trick
     private $id;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $title;
@@ -33,6 +35,7 @@ class Trick
     private $slug;
 
     /**
+     * @Assert\NotNull()
      * @ORM\Column(type="text")
      */
     private $description;
@@ -48,23 +51,25 @@ class Trick
     private $editedDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=MediaPicture::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
      */
     private $mediaPictures;
 
     /**
+     * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=MediaVideo::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     * @Assert\Valid()
      */
     private $mediaVideos;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricksAuthored")
      * @ORM\JoinColumn(nullable=false)
      */
     private $userAuthor;
@@ -74,10 +79,17 @@ class Trick
      */
     private $userEditor;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick", orphanRemoval=true)
+     * @ORM\OrderBy({"createdDate" = "DESC"})
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->mediaPictures = new ArrayCollection();
         $this->mediaVideos = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -237,6 +249,36 @@ class Trick
     public function setUserEditor(?User $userEditor): self
     {
         $this->userEditor = $userEditor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
 
         return $this;
     }

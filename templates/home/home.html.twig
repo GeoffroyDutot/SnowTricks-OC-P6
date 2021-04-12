@@ -5,24 +5,75 @@
 {% block body %}
 <div id="home-background" class="h-screen bg-fixed bg-no-repeat bg-cover">
     <h1 id="home-title" class="px-6 pt-40 text-blue-300 text-5xl sm:text-9xl leading-relaxed">The WORLD<br>of SNOWBOARD</h1>
+    <button class="absolute bottom-0 mb-20 right-0 mr-10 bg-white p-2 rounded-full hover:shadow-2xl focus:outline-none" id="scroll-tricks"><i class="fas fa-arrow-down fa-2x"></i></button>
 </div>
-<div class="home-tricks-list">
+<div class="home-tricks-list mb-5" id="block-trick-list">
     <h2 class="text-center text-green-500 text-3xl p-4" id="tricks">Tricks</h2>
-    <div class="group-tricks flex justify-around flex-wrap p-4">
+    {% if app.user is not empty %}
+        <div class="text-center m-10 text-base">
+            <a href="{{ path('trick_new') }}" class="bg-white rounded-lg shadow-lg px-2 py-2 hover:text-white hover:bg-green-400">New trick <i class="fas fa-plus"></i></a>
+        </div>
+    {% endif %}
+    <div class="group-tricks flex justify-around flex-wrap p-4" id="group-trick">
         {% for trick in tricks %}
-            <div class="trick-card border border-gray-100 rounded-lg shadow-lg bg-white max-w-md overflow-hidden my-4">
-                <a href="{{ path('trick_detail', {'slug': trick.slug}) }}"><img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture" class="w-full"></a>
+            <div class="trick-card rounded-lg shadow-lg bg-white max-w-md overflow-hidden my-4">
+                <a href="{{ path('trick_detail', {'slug': trick.slug}) }}"><img src="{% if trick.mediaPictures is not empty %}{{ asset('img/tricks/') }}{{ trick.mediaPictures|first.name }}{% else %}{{ asset('img/tricks/snowtrick.jpg') }}{% endif %}" alt="trick-picture" class="h-80 w-full"></a>
                 <div class="px-6 py-4 flex">
                     <h3 class="font-bold w-full"><a href="{{ path('trick_detail', {'slug': trick.slug}) }}">{{ trick.title}}</a></h3>
-                    {#
-                    <div class="flex">
-                        <a href=""><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
-                        <a href="" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7"></a>
-                    </div>
-                    #}
+                    {% if app.user is not empty %}
+                        <div class="flex">
+                            <a href="{{ path('trick_edit', {'slug': trick.slug}) }}"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-icon" class="object-contain h-7"></a>
+                            <button type="button" class="pl-4"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-icon" class="object-contain h-7" onclick="toggleModal('delete-trick-{{ trick.id }}')"></button>
+                        </div>
+                    {% endif %}
                 </div>
+            </div>
+            <div class="delete-modal">
+                <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-{{ trick.id }}">
+                    <div class="relative w-full sm:w-1/2 my-6 mx-auto max-w-3xl">
+                        <!--content-->
+                        <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <!--header-->
+                            <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                                <h3 class="text-3xl font-semibold">
+                                    Are you sure to delete that trick ?
+                                </h3>
+                                <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('delete-trick-{{ trick.id }}')">
+                                    x
+                                </button>
+                            </div>
+                            <!--body-->
+                            <p class="relative p-6 flex-auto w-full">This action is irreversible.</p>
+                            <!--footer-->
+                            <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                                <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="text-white bg-red-500 rounded-md shadow-2xl font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" style="transition: all .15s ease">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="delete-trick-{{ trick.id }}-backdrop"></div>
             </div>
         {% endfor %}
     </div>
+    <div class="text-center hidden" id="load-more-tricks">
+        <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-400 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Load More
+        </button>
+    </div>
 </div>
+<button class="fixed bottom-0 mb-20 right-0 mr-10 bg-white p-2 rounded-full hover:shadow-2xl focus:outline-none hidden" id="scroll-top"><i class="fas fa-arrow-up fa-2x"></i></button>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script>
+        infiniteScroll();
+    </script>
+    <script src="{{ asset('js/modal.js') }}"></script>
+    <script src="{{ asset('js/scroll.js') }}"></script>
 {% endblock %}

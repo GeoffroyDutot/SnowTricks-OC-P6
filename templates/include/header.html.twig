@@ -6,8 +6,12 @@
         <ul class="flex items-center md:text-base lg:text-lg">
             <li class="mr-5 pr-5 border-r-2 border-gray-400 border-opacity-75 border-green-400 hover:text-green-400"><a href="{{ path('home') }}">Home</a></li>
             <li class="mr-5 pr-5 border-r-2 border-gray-400 border-opacity-75 border-green-400 hover:text-green-400"><a href="{{ path('home') }}#tricks">Tricks</a></li>
-            <li class="mr-5 pr-5 border-r-2 border-gray-400 border-opacity-75 border-green-400 hover:text-green-400"><a href="">Sign In</a></li>
-            <li class="mr-5 pr-5 hover:text-green-400"><a href="">Sign Up</a></li>
+            {% if app.user is not empty %}
+                <li class="mr-5 pr-5 hover:text-green-400"><a href="{{ path('app_logout') }}">Logout</a></li>
+            {% else %}
+                <li class="mr-5 pr-5 border-r-2 border-gray-400 border-opacity-75 border-green-400 hover:text-green-400"><a href="{{ path('app_login') }}">Sign In</a></li>
+                <li class="mr-5 pr-5 hover:text-green-400"><a href="{{ path('app_register') }}">Sign Up</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
@@ -15,8 +19,12 @@
     <nav>
         <ul class="flex justify-around p-2">
             <li><a href="{{ path('home') }}"><img src="{{ asset('img/header/home-icon.svg.png') }}" alt="home-icon" class="object-contain h-10"></a></li>
-            <li><a href=""><img src="{{ asset('img/header/login-icon.png') }}" alt="log-in-icon" class="object-contain h-10"></a></li>
-            <li><a href=""><img src="{{ asset('img/header/sign-up-icon.png') }}" alt="sign-up-icon" class="object-contain h-10"></a></li>
+            {% if app.user is not empty %}
+                <li><a href="{{ path('app_logout') }}"><img src="{{ asset('img/header/logout-icon.png') }}" alt="logout-icon" class="object-contain h-10"></a></li>
+            {% else %}
+                    <li><a href="{{ path('app_login') }}"><img src="{{ asset('img/header/login-icon.png') }}" alt="login-icon" class="object-contain h-10"></a></li>
+                    <li><a href="{{ path('app_register') }}"><img src="{{ asset('img/header/sign-up-icon.png') }}" alt="sign-up-icon" class="object-contain h-10"></a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>

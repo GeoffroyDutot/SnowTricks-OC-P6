@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Snowtricks - TricksName detail{% endblock %}
+{% block title %}Snowtricks - {{ trick.title}} detail{% endblock %}
 
 {% block body %}
-<div class="trick-container w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
+<div class="trick-container w-11/12 md:w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-2xl shadow-2xl overflow-hidden bg-white">
     <div class="trick-big-picture-container relative z-0">
-        {#
-        <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
-            <a href="" class="pr-5"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></a>
-            <a href=""><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></a>
-        </div>
-        #}
+        {% if app.user is not empty %}
+            <div class="trick-group-icons absolute right-0 m-3 p-2 bg-white flex rounded">
+                <a href="{{ path('trick_edit', {'slug': trick.slug}) }}" class="pr-5"><img src="{{ asset('img/icons/edit-pen.svg.png') }}" alt="edit-trick-icon" class="object-contain h-7"></a>
+                <button type="button" onclick="toggleModal('delete-trick-{{ trick.id }}')"><img src="{{ asset('img/icons/trash.svg.png') }}" alt="delete-trick-icon" class="object-contain h-7"></button>
+            </div>
+        {% endif %}
         <div class="flex justify-center">
             <h1 class="trick-title absolute top-1/2 text-white text-4xl sm:text-8xl leading-relaxed">{{ trick.title }}</h1>
         </div>
@@ -36,57 +36,94 @@
         {% endif %}
         <div class="trick-text p-2">
             <p class="text-justify">{{ trick.description|nl2br }}</p>
-            <div class="trick-infos mt-5 mb-5 pb-4 text-center border-b-2 border-gray-200">
-                <span class="bg-gray-100 px-4 py-2 rounded">Group: {{ trick.category.name }}</span>
-                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Created: {{ trick.createdDate|date('d/m/Y') }}</span>
-                <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Author: {{ trick.userAuthor.username }}</span>
+            <div class="trick-infos flex flex-wrap justify-center mt-5 mb-5 pb-4 text-center border-b-2 border-gray-200">
+                <span class="bg-gray-100 m-2 px-4 py-2 rounded">Group: {{ trick.category.name }}</span>
+                <span class="bg-gray-100 m-2 px-4 py-2 mx-2 rounded">Created: {{ trick.createdDate|date('d/m/Y') }}</span>
+                <span class="bg-gray-100 m-2 px-4 py-2 mx-2 rounded">Author: {{ trick.userAuthor.username }}</span>
                 {% if trick.editedDate is not empty %}
-                    <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Last modification: {{ trick.editedDate|date('d/m/Y') }}</span>
+                    <span class="bg-gray-100 m-2 px-4 py-2 mx-2 rounded">Last modification: {{ trick.editedDate|date('d/m/Y') }}</span>
                 {% endif %}
                 {% if trick.userEditor is not empty %}
-                    <span class="bg-gray-100 px-4 py-2 mx-2 rounded">Edited by: {{ trick.userEditor.username }}</span>
+                    <span class="bg-gray-100 m-2 px-4 py-2 mx-2 rounded">Edited by: {{ trick.userEditor.username }}</span>
                 {% endif %}
             </div>
             <div class="trick-comment-form mt-5 mb-5 pb-4 border-b-2 border-gray-200">
-                <p class="text-center">Pour laisser un commentaire veuillez vous <a href="" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
-                {#
-                                <p class="text-lg">Add a new comment :</p>
-                <form class="flex justify-around mt-5">
-                    <textarea class="resize bg-gray-100 border border-gray-400 rounded w-3/5 focus:outline-none focus:bg-white placeholder-gray-700" placeholder="Type your comment..."></textarea>
+                {% if app.user is not empty %}
+                    <p class="text-lg">Add a new comment :</p>
+                    {{ form_start(commentForm, {'attr': {'class': 'flex flex-col items-center md:flex-row justify-around mt-5'}}) }}
+
+                    {{ form_label(commentForm.message) }}
+                    {{ form_widget(commentForm.message) }}
+                    <span class="text-red-500">{{ form_errors(commentForm.message) }}</span>
+
                     <button type="submit" class="border border-gray-400 rounded-lg hover:bg-gray-100 px-2 py-1">Send Comment</button>
-                </form>
-                #}
+                    {{ form_end(commentForm) }}
+                    {% else %}
+                        <p class="text-center">Pour laisser un commentaire veuillez vous <a href="{{ path('app_login') }}" class="text-blue-500 underline">connecter</a> sinon <a href="" class="text-blue-500 underline">inscrivez-vous.</a></p>
+                {% endif %}
             </div>
-            <div class="trick-comment-list">
-                <h3 class="text-lg font-bold">Commentaires:</h3>
-                <ul>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
-                    <li class="flex my-8 justify-center">
-                        <img src="{{ asset('img/users/user-profil-picture.jpg') }}" alt="user-profil-picture" class="user-picture flex w-12 rounded-full">
-                        <div class="mx-6 flex flex-col justify-center">
-                            <p class="text-gray-400">ThomasSnowtrickers</p>
-                            <p>Bonjour, je ne connaissais pas cette figure là. Elle à l'air plutôt sympa, je vais essayer de la reproduire. Merci chef !</p>
-                        </div>
-                    </li>
+            <div class="trick-comment-list w-4/5 m-auto">
+                <h3 class="text-lg font-bold">Commentaires ({{ totalComments }}):</h3>
+                <ul class="flex flex-col">
+                    {% for comment in comments %}
+                        <li class="flex my-4">
+                            <img src="{% if comment.user.profilePicture is not empty %}{{ asset('img/users/') }}{{ comment.user.profilePicture }}{% else %}{{ asset('img/users/user-profile-picture.jpg') }}{% endif %}" alt="user-profil-picture" class="user-picture flex inline-block h-24 w-24 rounded-full items-start">
+                            <div class="mx-6 flex flex-col justify-center">
+                                <p class="text-gray-600">{{ comment.user.username }}</p>
+                                <p class="text-gray-400">{{ comment.createdDate|date('d/m/Y') }}</p>
+                                <p>{{ comment.message }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
                 </ul>
                 <div class="load-more-comments flex justify-center">
-                    <button class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">Load more</button>
+                    {% if nbCommentsPage >= 1 %}
+                        {% if commentPage > 1 %}
+                            <a class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded focus:outline-none hover:shadow-md" href="{{ path('trick_detail', {'slug': trick.slug, 'comment': commentPage - 1}) }}"><</a>
+                        {% endif %}
+                        {% for pageNumber in 1..(nbCommentsPage) %}
+                            <a class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none {% if commentPage is same as(pageNumber) %}text-green-400 border-green-300{% endif %}" href="{{ path('trick_detail', {'slug': trick.slug, 'comment': pageNumber}) }}">{{ pageNumber }}</a>
+                        {% endfor %}
+                        {% if nbCommentsPage > commentPage %}
+                            <a class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded focus:outline-none hover:shadow-md" href="{{ path('trick_detail', {'slug': trick.slug, 'comment': commentPage + 1}) }}">></a>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+    <div class="delete-modal">
+        <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="delete-trick-{{ trick.id }}">
+            <div class="relative w-1/2 my-6 mx-auto max-w-3xl">
+                <!--content-->
+                <div class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                    <!--header-->
+                    <div class="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t">
+                        <h3 class="text-3xl font-semibold">
+                            Are you sure to delete that trick ?
+                        </h3>
+                        <button class="p-1 ml-auto bg-transparent border-0 text-black opacity-25 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" type="button" onclick="toggleModal('delete-trick-{{ trick.id }}')">
+                            x
+                        </button>
+                    </div>
+                    <!--body-->
+                    <p class="relative p-6 flex-auto w-full">This action is irreversible.</p>
+                    <!--footer-->
+                    <div class="flex items-center justify-end p-6 border-t border-solid border-gray-300 rounded-b">
+                        <a href="{{ path('trick_delete', {'slug': trick.slug}) }}" class="text-white bg-red-500 rounded-md shadow-2xl font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1" style="transition: all .15s ease">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="delete-trick-{{ trick.id }}-backdrop"></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        showMedias();
+    </script>
+    <script src="{{ asset('js/modal.js') }}"></script>
 {% endblock %}

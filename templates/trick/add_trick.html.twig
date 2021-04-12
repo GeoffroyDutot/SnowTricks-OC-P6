@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks - New trick{% endblock %}
+
+{% block body %}
+    <div class="trick-container w-11/12 md:w-3/4 m-auto mt-10 mb-10 border-gray-100 rounded-lg shadow-lg overflow-hidden bg-white">
+        <div class="form w-full flex flex-col py-5 px-8">
+            <h1 class="text-center text-3xl font-extrabold text-gray-900">Add new trick</h1>
+            {{ form_start(trickForm) }}
+            <div class="group-inputs flex flex-col px-8 py-4 space-y-4">
+                {{ form_label(trickForm.title) }}
+                {{ form_widget(trickForm.title) }}
+                <span class="text-red-500">{{ form_errors(trickForm.title) }}</span>
+
+                {{ form_label(trickForm.description) }}
+                {{ form_widget(trickForm.description) }}
+                <span class="text-red-500">{{ form_errors(trickForm.description) }}</span>
+
+                {{ form_label(trickForm.category) }}
+                {{ form_widget(trickForm.category) }}
+                <span class="text-red-500">{{ form_errors(trickForm.category) }}</span>
+
+                {{ form_label(trickForm.mediaPictures) }}
+                <ul id="media-pictures-fields-list"
+                    data-prototype="{{ form_widget(trickForm.mediaPictures.vars.prototype)|e }}"
+                    data-widget-tags="{{ '<li class="flex flex-row"></li>'|e }}"
+                    data-widget-counter="{{ trickForm.mediaPictures|length }}">
+                    {% for urlField in trickForm.mediaPictures %}
+                        <li>
+                            {{ form_errors(urlField) }}
+                            {{ form_widget(urlField) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <button type="button" class="add-another-collection-widget w-32 border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-2" data-list-selector="#media-pictures-fields-list">Add picture <i class="fas fa-plus"></i></button>
+
+                {{ form_label(trickForm.mediaVideos) }}
+                <ul id="media-videos-fields-list"
+                    data-prototype="{{ form_widget(trickForm.mediaVideos.vars.prototype)|e }}"
+                    data-widget-tags="{{ '<li class="flex flex-row"></li>'|e }}"
+                    data-widget-counter="{{ trickForm.mediaVideos|length }}">
+                    {% for urlField in trickForm.mediaVideos %}
+                        <li>
+                            {{ form_errors(urlField) }}
+                            {{ form_widget(urlField) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {{ form_row(trickForm._token) }}
+
+                <button type="button" class="add-another-collection-widget w-32 border border-gray-300 text-gray-900 rounded hover:shadow focus:outline-none focus:bg-gray-100 focus:bg-opacity-50 focus:border-gray-400 py-2 px-2" data-list-selector="#media-videos-fields-list">Add video <i class="fas fa-plus"></i></button>
+            </div>
+            <div class="sign-in-btn flex justify-center">
+                <button type="submit" class="items-center text-center border-b-4 px-4 py-2 mx-2 bg-gray-100 border-gray-300 text-black rounded hover:shadow-md focus:outline-none">Add</button>
+            </div>
+            {{ form_end(trickForm, {'render_rest': false}) }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/collection-form.js') }}"></script>
+{% endblock %}
