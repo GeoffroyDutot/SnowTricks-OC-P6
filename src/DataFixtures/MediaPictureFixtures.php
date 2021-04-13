@@ -26,7 +26,6 @@ class MediaPictureFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($mediaPicture2);
 
-
         $mediaPicture3 = new MediaPicture();
         $mediaPicture3->setName('snow-mountain.jpg');
         $mediaPicture3->setTrick($this->getReference('mute'));
@@ -110,7 +109,6 @@ class MediaPictureFixtures extends Fixture implements DependentFixtureInterface
         $mediaPicture16->setTrick($this->getReference('nose-pick'));
 
         $manager->persist($mediaPicture16);
-
         $manager->flush();
     }
 

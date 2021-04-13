@@ -1,36 +1,36 @@
 // show medias on trick details page responsive
 function showMedias() {
-    document.getElementById('show-medias-btn').addEventListener('click', function () {
-        let trickMedias = document.getElementById('trick-medias');
-        if (trickMedias.classList.contains('hidden')) {
-            trickMedias.classList.remove('hidden');
-            trickMedias.classList.add('flex');
-            this.innerHTML = 'Hide medias';
+    document.getElementById("show-medias-btn").addEventListener('click', function () {
+        let trickMedias = document.getElementById("trick-medias");
+        if (trickMedias.classList.contains("hidden")) {
+            trickMedias.classList.remove("hidden");
+            trickMedias.classList.add("flex");
+            this.innerHTML = "Hide medias";
         } else {
-            trickMedias.classList.add('hidden');
-            this.innerHTML = 'Show medias';
+            trickMedias.classList.add("hidden");
+            this.innerHTML = "Show medias";
         }
     });
 }
 
 // Load an alert message with animation
 function loadAlert() {
-    document.getElementById('alert').classList.remove('opacity-0');
-    document.getElementById('alert').classList.add('opacity-100');
+    document.getElementById('alert').classList.remove("opacity-0");
+    document.getElementById('alert').classList.add("opacity-100");
 }
 
 // Remove alert message with animation
 function removeAlert() {
-    document.getElementById('alert').classList.remove('ease-in');
-    document.getElementById('alert').classList.add('ease-out');
-    document.getElementById('alert').classList.remove('opacity-100');
-    document.getElementById('alert').classList.add('opacity-0');
-    setTimeout(hiddeAlert, 1000)
+    document.getElementById('alert').classList.remove("ease-in");
+    document.getElementById('alert').classList.add("ease-out");
+    document.getElementById('alert').classList.remove("opacity-100");
+    document.getElementById('alert').classList.add("opacity-0");
+    setTimeout(hiddeAlert, 1000);
 }
 
 // Remove space blank after hidding alert message
 function hiddeAlert() {
-    document.getElementById('alert').classList.add('hidden')
+    document.getElementById('alert').classList.add("hidden");
 }
 
 // Run removeAlert after some time
@@ -52,18 +52,18 @@ function infiniteScroll() {
         // check if we hit the bottom of the page
         if(scrollPoint >= totalPageHeight)
         {
-            var groupTrick = document.getElementById('group-trick');
-            var countTricks = groupTrick.childElementCount;
+            var groupTrick = document.getElementById("group-trick");
+            var countTricks = groupTrick.childElementCount; 
             var loadMoreTricksButton = document.getElementById('load-more-tricks');
             var groupDeleteModal = document.getElementById('group-delete-trick-modals');
 
             function addMoreTricks() {
-                if (loadMoreTricksButton.classList.contains('hidden') && canLoadMoreTricks) {
-                    loadMoreTricksButton.classList.remove('hidden');
-                    fetch('/?offset='+countTricks, {
-                        method: 'GET',
+                if (loadMoreTricksButton.classList.contains("hidden") && canLoadMoreTricks) {
+                    loadMoreTricksButton.classList.remove("hidden");
+                    fetch("/?offset="+countTricks, {
+                        method: "GET",
                         headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
+                            'X-Requested-With': "XMLHttpRequest"
                         }
                     })
                         .then(response => response.json())
@@ -123,7 +123,7 @@ function infiniteScroll() {
 
                                     groupTrick.innerHTML += cardTrick;
                                 });
-                            loadMoreTricksButton.classList.add('hidden');
+                            loadMoreTricksButton.classList.add("hidden");
                         })
                         .catch(error => console.log("Error : " + error));
                 }
@@ -131,5 +131,5 @@ function infiniteScroll() {
 
             setTimeout(addMoreTricks, 900);
         }
-    }
+    };
 }

@@ -132,6 +132,12 @@ class TrickController extends AbstractController
                 }
             }
 
+            foreach ($trick->getMediaPictures() as $mediaPicture) {
+                if (empty($mediaPicture->getName())) {
+                    $trick->removeMediaPicture($mediaPicture);
+                }
+            }
+
             $entityManager->persist($trick);
             $entityManager->flush();
 

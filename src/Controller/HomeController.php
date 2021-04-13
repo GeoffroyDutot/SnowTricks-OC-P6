@@ -14,7 +14,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(TrickRepository $trickRepository, Request $request, SerializerInterface $serializer): Response
+    public function index(TrickRepository $trickRepository, Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
             $offset = $request->query->get('offset');
