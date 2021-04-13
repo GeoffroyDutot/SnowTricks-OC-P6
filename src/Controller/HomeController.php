@@ -28,6 +28,7 @@ class HomeController extends AbstractController
                 }
 
                 $tricksData[] = [
+                    'id' => $trick->getId(),
                     'title' => $trick->getTitle(),
                     'slug' => $trick->getSlug(),
                     'picture' => $picture
