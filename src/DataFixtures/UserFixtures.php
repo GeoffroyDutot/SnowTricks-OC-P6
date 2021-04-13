@@ -26,7 +26,8 @@ class UserFixtures extends Fixture
         $user1->setPassword($password);
         $user1->setProfilePicture('user-profile-1.jpeg');
         $user1->setRoles(['ROLE_USER']);
-
+        $user1->setValidated(1);
+      
         $manager->persist($user1);
         $this->addReference('user1', $user1);
 
@@ -37,6 +38,7 @@ class UserFixtures extends Fixture
         $user2->setPassword($password);
         $user2->setProfilePicture('user-profile-man.jpeg');
         $user2->setRoles(['ROLE_USER']);
+        $user2->setValidated(1);
 
         $manager->persist($user2);
         $this->addReference('user2', $user2);
@@ -48,6 +50,7 @@ class UserFixtures extends Fixture
         $user3->setPassword($password);
         $user3->setProfilePicture('user-profile-man-2.jpeg');
         $user3->setRoles(['ROLE_USER']);
+        $user3->setValidated(1);
 
         $manager->persist($user3);
         $this->addReference('user3', $user3);
@@ -59,6 +62,7 @@ class UserFixtures extends Fixture
         $user4->setPassword($password);
         $user4->setProfilePicture('user-profile-girl.jpeg');
         $user4->setRoles(['ROLE_USER']);
+        $user4->setValidated(1);
 
         $manager->persist($user4);
         $this->addReference('user4', $user4);
@@ -70,6 +74,7 @@ class UserFixtures extends Fixture
         $user5->setPassword($password);
         $user5->setProfilePicture('user-profile-girl-1.jpeg');
         $user5->setRoles(['ROLE_USER']);
+        $user5->setValidated(1);
 
         $manager->persist($user5);
         $this->addReference('user5', $user5);
@@ -81,6 +86,7 @@ class UserFixtures extends Fixture
         $user6->setPassword($password);
         $user6->setProfilePicture('user-profile-man-1.jpeg');
         $user6->setRoles(['ROLE_USER']);
+        $user6->setValidated(1);
 
         $manager->persist($user6);
         $this->addReference('user6', $user6);

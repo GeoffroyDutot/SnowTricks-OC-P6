@@ -72,17 +72,18 @@ class TrickController extends AbstractController
     /**
      * @Route("/tricks/delete/{slug}", name="trick_delete")
      */
-    public function deleteTrick(Trick $trick): Response
+    public function deleteTrick(Trick $trick, Filesystem $filesystem): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $entityManager = $this->getDoctrine()->getManager();
 
         if (!empty($trick->getMediaPictures())) {
-            foreach ($trick->getMediaPictures() as $mediaPicture)
-            $entityManager->remove($mediaPicture);
+            foreach ($trick->getMediaPictures() as $mediaPicture) {
+                $entityManager->remove($mediaPicture);
 
-            unlink($this->getParameter('app.trick_picture_directory').$mediaPicture->getName());
+                $filesystem->remove($this->getParameter('app.trick_picture_directory') . $mediaPicture->getName());
+            }
         }
 
         if (!empty($trick->getMediaVideos())) {
